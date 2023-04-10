@@ -1,29 +1,47 @@
 <?php 
-$admin_data_path="C:\Users\Dell\Desktop\HeritageDairy\modules\admindata.txt";
+include_once("../public/Home.php");
+include_once("../modules/DatabaseConnection.php");
+include_once("../modules/ExitPage.php");
+
 class AdminLoginFunctionality{
+
+    //function to check admin email and password while login
     function checkAdminLogin(String $aemail,String $apassword){
-        $user_file=fopen($GLOBALS["admin_data_path"],"r");
-        if(filesize($GLOBALS["admin_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["admin_data_path"])));
-        }
-        fclose($user_file);
         $uem=null;
         $nam=null;
         $typ=null;
-        foreach($content as $val)
-        {
-            if(strlen($val)>0){
-                $v=explode(" ",$val);
-                if($v[1]===$aemail && $v[2]===$apassword){
-                    $uem=$aemail;
-                    $nam=$v[0];
-                    $typ="admin";
-                }
-                elseif($v[1]===$aemail && $v[2]!=$apassword){
-                    echo "\nPassword is incorrect.Login again!\n";
-                    (new Home())->home();
+
+        //getting the connection 
+        $conn=(new DatabaseConnection())->getConnection();
+
+        //try catch to handle sql exception
+        try{
+            $sql="select name,email,password from admin";
+
+            //result variable holding all records
+            $result=$conn->query($sql);
+
+            if($result->num_rows>0){
+                //while loop to fetch rows one by one from result variable
+                while($row=$result->fetch_assoc()){
+                    if($row["email"]==$aemail && $row["password"]==$apassword){
+                        $uem=$aemail;
+                        $nam=$row["name"];
+                        $typ="admin";
+                    }
+                    elseif($row["email"]===$aemail && $row["password"]!=$apassword){
+                        echo "\nPassword is incorrect.Login again!\n";
+                        (new Home())->home();
+                    }
                 }
             }
+        }
+        catch(mysqli_sql_exception $e){
+            throw new mysqli_sql_exception($sql,$e->getMessage(),$e->getCode());
+        }
+        finally{
+            //closing the connection
+            $conn->close();
         }
         if($uem!=null && $nam!=null && $typ!=null){
             $_SESSION["email"]=$uem;
@@ -32,9 +50,9 @@ class AdminLoginFunctionality{
             (new Home())->home();
         }
         else{
-            echo "Admin is not available.\n\n";
+            echo "\nAdmin is not available.\n\n";
             (new ExitPage())->exit();
-        }
+        }        
     }
 }
 ?>
