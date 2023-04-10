@@ -17,9 +17,8 @@ class Register{
         $this->email=readline("Enter user email : ");
         while($check_email_obj->checkEmailFormat($this->email)){
             echo "Email format is incorrect.Type again!\n";
-            $this->password=readline("Enter email again : ");
+            $this->email=readline("Enter email again : ");
         }
-
         $this->phone=readline("Enter user phone : ");
         $this->age=readline("Enter user age : ");
         $this->gender=readline("Enter user gender : ");
@@ -37,7 +36,7 @@ class Register{
         }
         if($check_password_obj->matchPassword($this->password,$this->confirm_password)){
             $user_functionality_obj=new UserFunctionality();
-            $user_functionality_obj->addNewUser($this->name,$this->email,$this->phone,$this->age,$this->gender,$this->password,$this->confirm_password);
+            $user_functionality_obj->addNewUser($this->name,$this->email,$this->phone,$this->age,$this->gender,$this->password);
             (new Home())->home();
         }
         else{
