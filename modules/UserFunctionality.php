@@ -1,426 +1,262 @@
 <?php 
- $GLOBALS["user_data_path"]="C:\Users\Dell\Desktop\HeritageDairy\modules\userdata.txt";
- include_once("../public/User.php");
+include_once("../modules/DatabaseConnection.php");
+//include_once("../public/Home.php");
+include_once("../public/User.php");
 class UserFunctionality{
-    public function addNewUser(String $name,String $email,String $phone,String $age,String $gender,String $password,String $confirm_password){
-        $user_file=fopen($GLOBALS["user_data_path"],"a");
-        fwrite($user_file,$name);
-        fwrite($user_file," ");
-        fwrite($user_file,$email);
-        fwrite($user_file," ");
-        fwrite($user_file,$phone);
-        fwrite($user_file," ");
-        fwrite($user_file,$age);
-        fwrite($user_file," ");
-        fwrite($user_file,$gender);
-        fwrite($user_file," ");
-        fwrite($user_file,$password);
-        fwrite($user_file," ");
-        fwrite($user_file,$confirm_password);
-        fwrite($user_file," ");
-        fwrite($user_file,"user");
-        fwrite($user_file,",");
-        fclose($user_file);
-        echo "\nUser Registered!\n";
-        (new Home())->home();
+
+    //function to insert new user
+    public function addNewUser(String $name,String $email,String $phone,String $age,String $gender,String $password){
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        try{
+            //sql statement
+            $sql="Insert into user (name,email,phone,age,gender,password) values (?,?,?,?,?,?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssss", $name, $email, $phone,$age,$gender,$password);
+            if($stmt->execute()===true){
+                echo "\nUser Registered\n";
+            }
+            else{
+                echo "\nNot registered\n";
+            }
+        }
+        catch(mysqli_sql_exception $e){
+           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+        }
+        finally{
+            //closing the statement
+            $stmt->close();
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
     }
 
+    //function to update user name
     function updateUserName(String $email,String $new_uname){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
-
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    fwrite($user_file,$new_uname);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-                else{
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        try{
+            //sql statement
+            $sql="update user set name=? where email=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $new_uname, $email);
+            if($stmt->execute()===true){
+                echo "\nUsername updated\n";
+                $_SESSION["name"]=$new_uname;
+            }
+            else{
+                echo "\nUsername not updated\n";
             }
         }
-        fclose($user_file);
-        echo "\nUser name updated\n";
-        (new Home())->home();
+        catch(mysqli_sql_exception $e){
+           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+        }
+        finally{
+            //closing the statement
+            $stmt->close();
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
     }
 
-
+    //function to update user email id
     function updateUserEmail(String $email,String $new_email){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
-
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$new_email);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-                else{
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        try{
+            //sql statement
+            $sql="update user set email=? where email=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $new_email, $email);
+            if($stmt->execute()===true){
+                echo "\nEmail updated\n";
+            }
+            else{
+                echo "\nEmail not updated\n";
             }
         }
-        fclose($user_file);
-        echo "\nUser email updated\n";
-        (new Home())->home();
+        catch(mysqli_sql_exception $e){
+           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+        }
+        finally{
+            //closing the statement
+            $stmt->close();
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
     }
 
+    //function to update user age
     function updateUserAge(String $email,String $new_age){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
-
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$new_age);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                    
-                }
-                else{
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        try{
+            //sql statement
+            $sql="update user set age=? where email=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $new_age, $email);
+            if($stmt->execute()===true){
+                echo "\nAge updated\n";
+            }
+            else{
+                echo "\nAge not updated\n";
             }
         }
-        fclose($user_file);
-        echo "\nUser age updated\n";
-        (new Home())->home();
+        catch(mysqli_sql_exception $e){
+           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+        }
+        finally{
+            //closing the statement
+            $stmt->close();
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
     }
 
+    //function to update user phone number
     function updateUserPhone(String $email,String $new_phone){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
-
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$new_phone);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-                else{
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-            }
-        }
-        fclose($user_file);
-        echo "\nUser phone updated\n";
-        (new Home())->home();
+       //getting the connection
+       $conn=(new DatabaseConnection())->getConnection();
+       try{
+           //sql statement
+           $sql="update user set phone=? where email=?";
+           $stmt = $conn->prepare($sql);
+           $stmt->bind_param("ss", $new_phone, $email);
+           if($stmt->execute()===true){
+               echo "\nUser phone number updated\n";
+           }
+           else{
+               echo "\nUser phone number not updated\n";
+           }
+       }
+       catch(mysqli_sql_exception $e){
+          throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+       }
+       finally{
+           //closing the statement
+           $stmt->close();
+           //closing the connection
+           $conn->close();
+           (new Home())->home();
+       }
     }
 
+    //function to update user gender
     function updateUserGender(String $email,String $new_gender){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
-
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$new_gender);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-                else{
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-            }
-        }
-        fclose($user_file);
-        echo "\nUser gender updated\n";
-        (new Home())->home();
+       //getting the connection
+       $conn=(new DatabaseConnection())->getConnection();
+       try{
+           //sql statement
+           $sql="update user set gender=? where email=?";
+           $stmt = $conn->prepare($sql);
+           $stmt->bind_param("ss", $new_gender, $email);
+           if($stmt->execute()===true){
+               echo "\nGender updated\n";
+           }
+           else{
+               echo "\nGender not updated\n";
+           }
+       }
+       catch(mysqli_sql_exception $e){
+          throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+       }
+       finally{
+           //closing the statement
+           $stmt->close();
+           //closing the connection
+           $conn->close();
+           (new Home())->home();
+       }
     }
 
+    //function to update user password
     function updateUserPassword(String $email,String $new_password){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
-
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$new_password);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$new_password);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-                else{
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        try{
+            //sql statement
+            $sql="update user set password=? where email=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $new_password, $email);
+            if($stmt->execute()===true){
+                echo "\nPassword updated\n";
+            }
+            else{
+                echo "\nPassword not updated\n";
             }
         }
-        fclose($user_file);
-        echo "\nUser password updated\n";
-        (new Home())->home();
+        catch(mysqli_sql_exception $e){
+           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+        }
+        finally{
+            //closing the statement
+            $stmt->close();
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
+    
     }
 
+    //function to view user data/profile
     function viewProfile(String $email){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file); 
-        foreach($content as $val){
-            $n=explode(" ",$val);
-            if(strlen($val)>0){
-                if($n[1]===$email){
-                    echo $val;
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        try{
+            //sql statement
+            $sql="select name,email,phone,age,gender from user";
+            //variable result to store records
+            $result = $conn->query($sql);
+            if($result->num_rows>0){
+                while($row=$result->fetch_assoc()){
+                    echo "Name:".$row["name"].", Email:".$row["email"].", Phone:".$row["phone"].", Age:".$row["age"].", Gender:".$row["gender"];
                 }
+            }else{
+                echo "\nNo records found\n";
             }
         }
-        (new Home())->home();
+        catch(mysqli_sql_exception $e){
+           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+        }
+        finally{
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
     }
 
-    function deleteUser(String $email){
-        $user_file=fopen($GLOBALS["user_data_path"],"r");
-        if(filesize($GLOBALS["user_data_path"])>0){
-            $content=explode(",",fread($user_file,filesize($GLOBALS["user_data_path"])));
-        }
-        fclose($user_file);
 
-       $user_file=fopen($GLOBALS["user_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]!=$email){
-                    fwrite($user_file,$n[0]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[1]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[2]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[3]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[4]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[5]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[6]);
-                    fwrite($user_file," ");
-                    fwrite($user_file,$n[7]);
-                    fwrite($user_file,",");
-                }
-            }
-        }
-        fclose($user_file);
-        echo "\nUser deleted successfully\n";
-        (new ExitPage())->exit();
+    //function to delete user
+    function deleteUser(String $email){
+        //getting the connection
+       $conn=(new DatabaseConnection())->getConnection();
+       try{
+           //sql statement
+           $sql="delete from user where email=?";
+           $stmt = $conn->prepare($sql);
+           $stmt->bind_param("s", $email);
+           if($stmt->execute()===true){
+               echo "\nRecord deleted\n";
+           }
+           else{
+               echo "\nRecord not deleted\n";
+           }
+       }
+       catch(mysqli_sql_exception $e){
+          throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
+       }
+       finally{
+           //closing the statement
+           $stmt->close();
+           //closing the connection
+           $conn->close();
+           (new ExitPage())->exit();
+       }
     }
 }
 
-// $val=new UserFunctionality();
-// $val->addNewUser("sonu","s.sonupatra@gmail.com","9776308501","22","male","ssonupatra12@","ssonupatra12@");
-//$val->updateUserName("sonu","ram");
-// $val->updateUserEmail("s.sonupatra@gmail.com","abc@gmail.com");
-// $val->updateUserAge("abc@gmail.com","33");
-// $val->updateUserGender("abc@gmail.com","female");
-// $val->updateUserName("abc@gmail.com","roshni");
-// $val->updateUserPhone("abc@gmail.com","993849237");
-// $val->updateUserPassword("abc@gmail.com","Roshni22@$");
-//$val->viewProfile("abc@gmail.com");
-//$val->deleteUser("abc@gmail.com");
 ?>

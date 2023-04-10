@@ -26,27 +26,28 @@ class Products{
                     $prod=new ProductFunctionality();
                     $pname=readline("Enter product name : ");
                     $pprice=readline("Enter product price : ");
-                    $prod->addNewProduct($pname,$pprice);
+                    $prod_id=readline("Enter product id : ");
+                    $prod->addNewProduct($prod_id,$pname,$pprice);
                     break;
                 }
                 case 3:{
                     $prod=new ProductFunctionality();
-                    $old_name=readline("Enter product name to be renamed : ");
+                    $prod_id=readline("Enter product id to be renamed : ");
                     $new_name=readline("Enter new product name : ");
-                    $prod->updateProductName($old_name,$new_name);
+                    $prod->updateProductName($prod_id,$new_name);
                     break;
                 }
                 case 4:{
                     $prod=new ProductFunctionality();
-                    $pname=readline("Enter product name : ");
-                    $new_pprice=readline("Enrer new product price : ");
-                    $prod->updateProductPrice($pname,$new_pprice);
+                    $prod_id=readline("Enter product id : ");
+                    $new_pprice=readline("Enter new product price : ");
+                    $prod->updateProductPrice($prod_id,$new_pprice);
                     break;
                 }
                 case 5:{
                     $prod=new ProductFunctionality();
-                    $pname=readline("Enter product name to be deleted : ");
-                    $prod->deleteProduct($pname);
+                    $p_id=readline("Enter product id to be deleted : ");
+                    $prod->deleteProduct($p_id);
                     break;
                 }
                 case 6:{
