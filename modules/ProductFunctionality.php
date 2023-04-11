@@ -121,7 +121,6 @@ class ProductFunctionality{
         finally{
             //closing the connection
             $conn->close();
-            (new Products())->productOption();
         }
 
         //if condition to check whether session type is admin or not
