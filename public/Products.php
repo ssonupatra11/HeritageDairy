@@ -12,8 +12,7 @@ class Products{
             echo "3.Update Product Name\n";
             echo "4.Update Product Price\n";
             echo "5.Delete Product\n";
-            echo "6.allProdSoldTillDate\n";
-            echo "6.ViewAllOrderHistory\n";
+            echo "6.View All order history\n";
             echo "7.exit\n\n";
             $choice=readline("Enter the option : ");
             switch($choice){
@@ -48,11 +47,6 @@ class Products{
                     $prod=new ProductFunctionality();
                     $p_id=readline("Enter product id to be deleted : ");
                     $prod->deleteProduct($p_id);
-                    break;
-                }
-                case 6:{
-                    $ord=new AdminFunctionality();
-                    $ord->allProdSoldTillDate();
                     break;
                 }
                 case 6:{

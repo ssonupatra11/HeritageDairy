@@ -14,7 +14,7 @@ class ProductFunctionality{
 
         //try catch to handle sql exceptions
         try{
-            $sql="Insert into products (prod_id,name,price) values (?,?,?)";
+            $sql="Insert into products (prod_id,prod_name,prod_price) values (?,?,?)";
 
             $stmt=$conn->prepare($sql);
             $stmt->bind_param("sss",$prod_id,$pname,$pprice);
@@ -44,7 +44,7 @@ class ProductFunctionality{
     
         try{
             //sql statement
-            $sql="update products set name=? where prod_id=?";
+            $sql="update products set prod_name=? where prod_id=?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ss", $new_uname, $prod_id);
             if($stmt->execute()===true){
@@ -73,7 +73,7 @@ class ProductFunctionality{
 
         try{
             //sql statement
-            $sql="update products set price=? where prod_id=?";
+            $sql="update products set prod_price=? where prod_id=?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ss", $new_pprice, $prod_id);
             if($stmt->execute()===true){
@@ -108,7 +108,7 @@ class ProductFunctionality{
 
             if($result->num_rows>0){
                 while($row=$result->fetch_assoc()){
-                    echo "\nProduct Id : ".$row["prod_id"].",\nProduct Name : ".$row["name"].",\nProduct Price : ".$row["price"]."\n";
+                    echo "\nProduct Id : ".$row["prod_id"].",\nProduct Name : ".$row["prod_name"].",\nProduct Price : ".$row["prod_price"]."\n";
                 }
             }
             else{

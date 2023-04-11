@@ -63,9 +63,10 @@ class Home{
             echo "3.Add product to cart\n";
             echo "4.Remove product from cart\n";
             echo "5.View Cart\n";
-            echo "6.View Order History\n";
-            echo "7.View Profile\n";
-            echo "8.exit\n\n";
+            echo "6.Buy product\n";
+            echo "7.View Order History\n";
+            echo "8.View Profile\n";
+            echo "9.exit\n\n";
             $choice=readline("Enter the option : ");
             switch($choice){
                 case 1:{
@@ -80,19 +81,16 @@ class Home{
                 }
                 case 3:{
                     $cart=new CartFunctionality();
-                    $nam=$_SESSION["name"];
-                    $pho=readline("Enter phone number : ");
                     $ema=$_SESSION["email"];
-                    $pnam=readline("Enter product name : ");
-                    $ppri=readline("Enter prod price : ");
-                    $cart->addProductsToCart($nam,$ema,$pho,$pnam,$ppri);
+                    $pid=readline("Enter product id : ");
+                    $cart->addProductsToCart($ema,$pid);
                     break;
                 }
                 case 4:{
                     $cart1=new CartFunctionality();
-                    $ema1=$_SESSION["email"];
-                    $pnam1=readline("Enter product name : ");
-                    $cart1->removeProduct($ema1,$pnam1);
+                    $email=$_SESSION["email"];
+                    $pid=readline("Enter product id to be removed : ");
+                    $cart1->removeProduct($email,$pid);
                     break;
                 }
                 case 5:{
@@ -102,15 +100,21 @@ class Home{
                 }
                 case 6:{
                     $ord=new Order();
-                    $ord->viewUserOrderHistory($_SESSION["email"]);
+                    $pid=readline("Enter prod_id to buy from cart : ");
+                    $ord->buyProduct($_SESSION["email"],$pid);
                     break;
                 }
                 case 7:{
+                    $ord=new Order();
+                    $ord->viewUserOrderHistory($_SESSION["email"]);
+                    break;
+                }
+                case 8:{
                     $ufun=new UserFunctionality();
                     $ufun->viewProfile($_SESSION["email"]);
                     break;
                 }
-                case 8:{
+                case 9:{
                     $exit=new ExitPage();
                     $exit->exit();
                 }
