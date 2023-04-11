@@ -1,80 +1,100 @@
 <?php 
-$cart_data_path="C:\Users\Dell\Desktop\HeritageDairy\modules\cartdata.txt";
+include_once("../modules/DatabaseConnection.php");
 include_once("../public/Home.php");
+
 class CartFunctionality{
 
-    function addProductsToCart(String $uname,String $email,String $phone,String $pname,String $pprice){
-        $cart_file=fopen($GLOBALS["cart_data_path"],"a");
-        fwrite($cart_file,$uname);
-        fwrite($cart_file," ");
-        fwrite($cart_file,$email);
-        fwrite($cart_file," ");
-        fwrite($cart_file,$phone);
-        fwrite($cart_file," ");
-        fwrite($cart_file,$pname);
-        fwrite($cart_file," ");
-        fwrite($cart_file,date("Y/m/d"));
-        fwrite($cart_file," ");
-        fwrite($cart_file,$pprice);
-        fwrite($cart_file,",");
-        fclose($cart_file);
-        (new Home())->home();
-    }
+    //function to add products to cart
+    function addProductsToCart(String $email,String $pid){
+        //getting the connection
+        $conn=(new DatabaseConnection())->getConnection();
+        //try catch to handle sql exception
+        try{
+            $sql="Insert into cart(uemail,prod_id) values(?,?)";
+            $stmt=$conn->prepare($sql);
+            $stmt->bind_param("ss",$email,$pid);
 
-    function removeProduct(String $email,String $pname){
-        $cart_file=fopen($GLOBALS["cart_data_path"],"r");
-        if(filesize($GLOBALS["cart_data_path"])>0){
-            $content=explode(",",fread($cart_file,filesize($GLOBALS["cart_data_path"])));
-        }
-        fclose($cart_file);
-
-       $cart_file=fopen($GLOBALS["cart_data_path"],"w");
-        foreach($content as $val){
-            
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]!=$email && $n[3]!=$pname){
-                    fwrite($cart_file,$n[0]);
-                    fwrite($cart_file," ");
-                    fwrite($cart_file,$n[1]);
-                    fwrite($cart_file," ");
-                    fwrite($cart_file,$n[2]);
-                    fwrite($cart_file," ");
-                    fwrite($cart_file,$n[3]);
-                    fwrite($cart_file," ");
-                    fwrite($cart_file,$n[4]);
-                    fwrite($cart_file," ");
-                    fwrite($cart_file,$n[5]);
-                    fwrite($cart_file,",");
-                }
+            if($stmt->execute()===true){
+                echo "\nProduct added to cart\n";
+            }
+            else{
+                echo "\nProduct not added to cart\n";
             }
         }
-        fclose($cart_file);
+        catch(mysqli_sql_exception $e){
+            throw new mysqli_sql_exception($sql,$e->getMessage(),$e->getCode());
+        }
+        finally{
+            //closing the statement
+            $stmt->close();
+            //closing the connection
+            $conn->close();
+            (new Home())->home();
+        }
+    }
+
+    //function to remove product from cart
+    function removeProduct(String $email,String $pid){
+         //getting the connection
+         $conn=(new DatabaseConnection())->getConnection();
+         //try catch to handle sql exception
+         try{
+             $sql="delete from cart where uemail=? and prod_id=?";
+             $stmt=$conn->prepare($sql);
+             $stmt->bind_param("ss",$email,$pid);
+ 
+             if($stmt->execute()===true){
+                 echo "\nProduct removed from cart\n";
+             }
+             else{
+                 echo "\nProduct not removed from cart\n";
+             }
+         }
+         catch(mysqli_sql_exception $e){
+             throw new mysqli_sql_exception($sql,$e->getMessage(),$e->getCode());
+         }
+         finally{
+             //closing the statement
+             $stmt->close();
+             //closing the connection
+             $conn->close();
+             (new Home())->home();
+         }
         (new Home())->home();
     }
      
+    //function to view user cart
     function viewUserCartHistory(String $email){
-        $cart_file=fopen($GLOBALS["cart_data_path"],"r");
-        if(filesize($GLOBALS["cart_data_path"])>0){
-            $content=explode(",",fread($cart_file,filesize($GLOBALS["cart_data_path"])));
-        }
-        foreach($content as $val){
-            if(strlen($val)>0){
-                $n=explode(" ",$val);
-                if($n[1]===$email){
-                    echo $val."\n";
+         //getting the connection
+         $conn=(new DatabaseConnection())->getConnection();
+         //try catch to handle sql exception
+         try{
+             $sql="select c.uemail,p.prod_id,p.prod_name,p.prod_price from cart c,products p where c.prod_id=p.prod_id";
+             $result=$conn->query($sql);
+             $count=0;
+             if($result->num_rows>0){
+                while($row=$result->fetch_assoc()){
+                    if($row["uemail"]==$email){
+                        echo "\nUser Email : ".$row["uemail"]."\nProduct Id : ".$row["prod_id"]."\nProduct name : ".$row["prod_name"]."\nProduct Price : ".$row["prod_price"]."\n";
+                        $count++;
+                    }
                 }
-            }
-        }
-        fclose($cart_file);
-       (new Home())->home();
+             }
+             if($count==0){
+                echo "\nNo records found\n";
+             }
+         }
+         catch(mysqli_sql_exception $e){
+             throw new mysqli_sql_exception($sql,$e->getMessage(),$e->getCode());
+         }
+         finally{
+             //closing the connection
+             $conn->close();
+             (new Home())->home();
+         }
     }
 
     
 }
 
-$val=new CartFunctionality();
-//$val->addProductsToCart("Roshni","roshni@gmail.com","927273687","milk","20");
-//$val->removeProduct("abc@gmail.com","curd");
-//$val->viewUserOrderHistory("abc@gmail.com");
 ?>  
