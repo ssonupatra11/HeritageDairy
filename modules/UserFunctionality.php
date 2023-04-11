@@ -213,7 +213,8 @@ class UserFunctionality{
             $result = $conn->query($sql);
             if($result->num_rows>0){
                 while($row=$result->fetch_assoc()){
-                    echo "Name:".$row["name"].", Email:".$row["email"].", Phone:".$row["phone"].", Age:".$row["age"].", Gender:".$row["gender"];
+                    if($row["email"]===$email)
+                        echo "Name:".$row["name"].", Email:".$row["email"].", Phone:".$row["phone"].", Age:".$row["age"].", Gender:".$row["gender"];
                 }
             }else{
                 echo "\nNo records found\n";
