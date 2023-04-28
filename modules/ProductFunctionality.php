@@ -30,9 +30,11 @@ class ProductFunctionality{
         }
         finally{
             //closing statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Products())->productOption();
         }
     }
@@ -59,9 +61,11 @@ class ProductFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Products())->productOption();
         }
     }
@@ -88,9 +92,11 @@ class ProductFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Products())->productOption();
         }
     }
@@ -120,7 +126,8 @@ class ProductFunctionality{
         }
         finally{
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
         }
 
         //if condition to check whether session type is admin or not
@@ -155,9 +162,11 @@ class ProductFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Products())->productOption();
         }
         

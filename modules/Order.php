@@ -29,7 +29,8 @@ class Order{
         }
         finally{
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }
@@ -69,9 +70,11 @@ class Order{
         }
         finally{
             //closing statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }

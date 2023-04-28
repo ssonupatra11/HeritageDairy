@@ -41,7 +41,8 @@ class AdminLoginFunctionality{
         }
         finally{
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
         }
         if($uem!=null && $nam!=null && $typ!=null){
             $_SESSION["email"]=$uem;

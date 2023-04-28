@@ -26,7 +26,8 @@ class AdminFunctionality{
         }
         finally{
             //closing theconnection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Products())->productOption();
         }
     }

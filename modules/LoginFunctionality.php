@@ -39,7 +39,8 @@ class LoginFunctionality{
         }
         finally{
             //closing connection
-            $conn->close();
+            if($conn)
+                $conn->close();
         }
 
         //if condition to check whether all sessions are null or not

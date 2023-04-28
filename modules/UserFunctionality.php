@@ -25,9 +25,11 @@ class UserFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }
@@ -54,9 +56,11 @@ class UserFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }
@@ -82,9 +86,11 @@ class UserFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }
@@ -110,9 +116,11 @@ class UserFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }
@@ -137,11 +145,13 @@ class UserFunctionality{
           throw new mysqli_sql_exception($sql, $e->getMessage(), $e->getCode());
        }
        finally{
-           //closing the statement
-           $stmt->close();
-           //closing the connection
-           $conn->close();
-           (new Home())->home();
+            //closing the statement
+            if($stmt)
+                $stmt->close();
+            //closing the connection
+            if($conn)
+                $conn->close();
+            (new Home())->home();
        }
     }
 
@@ -166,9 +176,11 @@ class UserFunctionality{
        }
        finally{
            //closing the statement
-           $stmt->close();
+           if($stmt)
+               $stmt->close();
            //closing the connection
-           $conn->close();
+            if($conn)
+               $conn->close();
            (new Home())->home();
        }
     }
@@ -194,9 +206,11 @@ class UserFunctionality{
         }
         finally{
             //closing the statement
-            $stmt->close();
+            if($stmt)
+                $stmt->close();
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     
@@ -225,7 +239,8 @@ class UserFunctionality{
         }
         finally{
             //closing the connection
-            $conn->close();
+            if($conn)
+                $conn->close();
             (new Home())->home();
         }
     }
@@ -252,9 +267,11 @@ class UserFunctionality{
        }
        finally{
            //closing the statement
-           $stmt->close();
+           if($stmt)
+               $stmt->close();
            //closing the connection
-           $conn->close();
+           if($conn)
+               $conn->close();
            (new ExitPage())->exit();
        }
     }
