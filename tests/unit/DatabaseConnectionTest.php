@@ -1,7 +1,7 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-include_once("./config/config.php");
-include_once("./modules/DatabaseConnection.php");
+include("./config/config.php");
+include("./Model/DatabaseConnection.php");
 final class DatabaseConnectionTest extends TestCase{
     public function testGetConnection(): void{
         $conn=new DatabaseConnection();

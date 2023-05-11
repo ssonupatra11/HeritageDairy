@@ -1,6 +1,6 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-include_once("./modules/CheckPassword.php");
+include("./Controller/CheckPassword.php");
 final class CheckPasswordTest extends TestCase{
     public function testPasswordFormat(): void{
         $check_pass_obj=new CheckPassword();

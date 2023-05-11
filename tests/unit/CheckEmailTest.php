@@ -1,6 +1,6 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-include_once("./modules/CheckEmail.php");
+include("./Controller/CheckEmail.php");
 final class CheckEmailTest extends TestCase{
     public function testCheckEmailFormat(): void{
         $check_email_obj=new CheckEmail();
