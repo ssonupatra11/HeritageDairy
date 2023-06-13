@@ -1,12 +1,24 @@
 <?php 
+/**
+ * This class has a functionality to display product choices for admin.
+ */
 class Products{
 
     /**
-     * @var int/null
+     * @access private
+
+     * @var int|null
      */
     private ?int $choice=null;
 
-    public function productOption(){
+    /**
+     * This productOption() display's choices to select for products.
+     * 
+     * @access public
+
+     * @return void
+     */
+    public function productOption():void{
         echo <<<EOT
             -------------------------
             Hello "$_SESSION[name]"!
@@ -23,35 +35,59 @@ class Products{
             $this->choice=(int)readline("Enter the option : ");
             switch($this->choice){
                 case 1:{
-                    $GLOBALS['product_functionality']->retriveProduct();
+                    $GLOBALS['view_all_products']->view();
                     break;
                 }
                 case 2:{
+                    /**
+                     * @var string
+                     */
                     $pname=(string)readline("Enter product name : ");
+                    /**
+                     * @var string
+                     */
                     $pprice=(string)readline("Enter product price : ");
+                    /**
+                     * @var string
+                     */
                     $prod_id=(string)readline("Enter product id : ");
-                    $GLOBALS['product_functionality']->addNewProduct($prod_id,$pname,$pprice);
+                    $GLOBALS['add_product']->addNewProduct($prod_id,$pname,$pprice);
                     break;
                 }
                 case 3:{
+                    /**
+                     * @var string
+                     */
                     $prod_id=(string)readline("Enter product id to be renamed : ");
+                    /**
+                     * @var string
+                     */
                     $new_name=(string)readline("Enter new product name : ");
-                    $GLOBALS['product_functionality']->updateProductName($prod_id,$new_name);
+                    $GLOBALS['update_product_name']->updateProductName($prod_id,$new_name);
                     break;
                 }
                 case 4:{
+                    /**
+                     * @var string
+                     */
                     $prod_id=(string)readline("Enter product id : ");
+                    /**
+                     * @var string
+                     */
                     $new_pprice=(string)readline("Enter new product price : ");
-                    $GLOBALS['product_functionality']->updateProductPrice($prod_id,$new_pprice);
+                    $GLOBALS['update_product_price']->updateProductPrice($prod_id,$new_pprice);
                     break;
                 }
                 case 5:{
+                    /**
+                     * @var string
+                     */
                     $p_id=(string)readline("Enter product id to be deleted : ");
-                    $GLOBALS['product_functionality']->deleteProduct($p_id);
+                    $GLOBALS['delete_product']->deleteProduct($p_id);
                     break;
                 }
                 case 6:{
-                    $GLOBALS['admin_functionality']->viewAllOrderHistory();
+                    $GLOBALS['view_all_order_list']->view();
                     break;
                 }
                 case 7:{
@@ -64,4 +100,3 @@ class Products{
             }
     }  
 }
-?>

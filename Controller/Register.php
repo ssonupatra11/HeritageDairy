@@ -1,52 +1,85 @@
 <?php
-
+/**
+ * This Anonymous class has a functionality to register new user.
+ */
 class Register{
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $name=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $email=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $phone=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $age=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $gender=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $password=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $confirm_password=null;
 
+
+    //Destructor is called when there is no reference to its object
+    function __destruct(){}
     
+    /**
+     * This function takes user data from command line and register a new user.
+     * 
+     * @access public
+     * 
+     * @return void
+     */
     public function addNewUser() : void{
+        /**
+         * @var mixed
+         */
         $check_password_obj=new CheckPassword();
+        /**
+         * @var mixed
+         */
         $check_email_obj=new CheckEmail();
+        
         echo <<<EOT
-        ---------------------------------
-              Register New User
-        ---------------------------------
-        \n
-    EOT;
+            ---------------------------------
+                  Register New User
+            ---------------------------------
+            \n
+        EOT;
 
         $this->name=(string)readline("Enter user name : ");
         
@@ -71,7 +104,10 @@ class Register{
             $this->confirm_password=(string)readline("Enter password : ");
         }
         if($check_password_obj->matchPassword($this->password,$this->confirm_password)){
-            $user_functionality_obj=new UserFunctionality();
+            /**
+             * @var mixed
+             */
+            $user_functionality_obj=new AddUser();
             $user_functionality_obj->addNewUser($this->name,$this->email,$this->phone,$this->age,$this->gender,$this->password);
             $GLOBALS['home']->home();
         }
@@ -82,5 +118,3 @@ class Register{
     }
 
 }
-
-?>

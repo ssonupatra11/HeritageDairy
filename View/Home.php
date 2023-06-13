@@ -3,14 +3,23 @@ session_start();
 $_SESSION["email"]=null;
 $_SESSION["name"]=null;
 $_SESSION["type"]=null;
+/**
+ * This class has functionality to display home page.
+ */
 class Home{
 
     /**
-     * @var int/null
+     * @access private
+     * @var int|null
      */
     private ?int $choice=null;
 
-    public function home(){
+    /**
+     * This function will display choices based on condition.
+     * @access public
+     * @return void
+     */
+    public function home():void{
         if(!isset($_SESSION["email"]) && !isset($_SESSION["type"])){
             echo <<<EOT
           -------------------------
@@ -28,15 +37,24 @@ class Home{
             $this->choice=(int)readline("Enter the option : ");
             switch($this->choice){
                 case 1:{
-                    $GLOBALS['login']->readLoginData();
+                    /**
+                     * Accessing readLoginData() method using nullsafe operator '?->'.
+                     */
+                    $GLOBALS['login']?->readLoginData();
                     break;
                 }
                 case 2:{
-                    $GLOBALS['register']->addNewUser();
+                    /**
+                     * Accessing addNewUser() method using nullsafe operator '?->'.
+                     */
+                    $GLOBALS['register']?->addNewUser();
                     break;
                 }
                 case 3:{
-                    $GLOBALS['product_functionality']->retriveProduct();
+                    /**
+                     * Accessing retriveProduct() method using nullsafe operator '?->'.
+                     */
+                    $GLOBALS['view_all_products']?->view();
                     break;
                 }
                 case 4:{
@@ -71,7 +89,7 @@ class Home{
             $this->choice=(int)readline("Enter the option : ");
             switch($this->choice){
                 case 1:{
-                    $GLOBALS['product_functionality']->retriveProduct();
+                    $GLOBALS['view_all_products']->view();
                     break;
                 }
                 case 2:{
@@ -79,32 +97,47 @@ class Home{
                     break;
                 }
                 case 3:{
+                    /**
+                     * @var mixed
+                     */
                     $ema=$_SESSION["email"];
+                    /**
+                     * @var string
+                     */
                     $pid=(string)readline("Enter product id : ");
-                    $GLOBALS['cart']->addProductsToCart($ema,$pid);
+                    $GLOBALS['cart_add_product']->addProductsToCart($ema,$pid);
                     break;
                 }
                 case 4:{
+                    /**
+                     * @var mixed
+                     */
                     $email=$_SESSION["email"];
+                    /**
+                     * @var string
+                     */
                     $pid=(string)readline("Enter product id to be removed : ");
-                    $GLOBALS['cart']->removeProduct($email,$pid);
+                    $GLOBALS['cart_remove_product']->removeProduct($email,$pid);
                     break;
                 }
                 case 5:{
-                    $GLOBALS['cart']->viewUserCartHistory($_SESSION["email"]);
+                    $GLOBALS['view_cart_history']->view();
                     break;
                 }
                 case 6:{
+                    /**
+                     * @var string
+                     */
                     $pid=(string)readline("Enter prod_id to buy from cart : ");
-                    $GLOBALS['order']->buyProduct($_SESSION["email"],$pid);
+                    $GLOBALS['buy_product']->buyProduct($_SESSION["email"],$pid);
                     break;
                 }
                 case 7:{
-                    $GLOBALS['order']->viewUserOrderHistory($_SESSION["email"]);
+                    $GLOBALS['view_user_order_history']->view();
                     break;
                 }
                 case 8:{
-                    $GLOBALS['user_functionality']->viewProfile($_SESSION["email"]);
+                    $GLOBALS['view_user_profile']->view();
                     break;
                 }
                 case 9:{
@@ -145,4 +178,3 @@ class Home{
       
 
 }
-?>

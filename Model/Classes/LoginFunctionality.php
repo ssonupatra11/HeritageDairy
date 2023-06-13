@@ -1,21 +1,47 @@
 <?php
-
+/**
+ * This class has a functionality to login user.
+ */
 class LoginFunctionality{
 
     /**
-     * @var PDO/null
+     * @access private
+     * 
+     * @var PDO|null
      */
     private ?PDO $conn=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $sql=null;
 
-    //function to check login email and password
+    //Destructor is called when there is no reference to its object
+    function __destruct(){}
+
+    /**
+     * This function check's user email and password while logging in.
+     * 
+     * @access public
+     * 
+     * @param string $uemail,@param string $password
+     * 
+     * @return void
+     */
     public function checkLogin(String $uemail,String $password) : void{
+       /**
+         * @var null
+         */
         $uem=null;
+        /**
+         * @var null
+         */
         $nam=null;
+        /**
+         * @var null
+         */
         $typ=null;
 
         //getting the connection
@@ -71,4 +97,3 @@ class LoginFunctionality{
         }
     }
 }
-?>

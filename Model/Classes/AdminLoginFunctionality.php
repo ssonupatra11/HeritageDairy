@@ -1,20 +1,47 @@
 <?php 
+/**
+ * This class has a functionality to login admin.
+ */
 class AdminLoginFunctionality{
 
     /**
-     * @var PDO/null
+     * @access private
+     * 
+     * @var PDO|null
      */
     private ?PDO $conn=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $sql=null;
 
-    //function to check admin email and password while login
+    //Destructor is called when there is no reference to its object
+    function __destruct(){}
+
+    /**
+     * This function check's admin email and password while logging in.
+     * 
+     * @access public
+     * 
+     * @param string $aemail,@param string $apassword
+     * 
+     * @return void
+     */
     public function checkAdminLogin(String $aemail,String $apassword) : void{
+        /**
+         * @var null
+         */
         $uem=null;
+        /**
+         * @var null
+         */
         $nam=null;
+        /**
+         * @var null
+         */
         $typ=null;
 
         //getting the connection 
@@ -68,4 +95,3 @@ class AdminLoginFunctionality{
         }        
     }
 }
-?>

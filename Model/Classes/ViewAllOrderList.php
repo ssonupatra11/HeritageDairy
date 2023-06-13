@@ -1,18 +1,36 @@
 <?php 
-class AdminFunctionality{
+
+/**
+ * This class has a functionality to view all order history.
+ */
+ class ViewAllOrderList implements ViewData{
     
     /**
-     * @var PDO/null
+     * @access private
+     * 
+     * @var PDO|null
      */
     private ?PDO $conn=null;
 
     /**
-     * @var string/null
+     * @access private
+     * 
+     * @var string|null
      */
     private ?string $sql=null;
     
-    //function to fetch all users order records
-    public function viewAllOrderHistory() : void{
+
+    //Destructor is called when there is no reference to its object
+    function __destruct(){}
+
+    /**
+     * This function to fetch all users order records.
+     * 
+     * @access public
+     * 
+     * @return void
+     */
+    public function view() : void{
         //getting the connection
         $this->conn=DatabaseConnection::getConnection();
 
@@ -47,5 +65,3 @@ class AdminFunctionality{
         }
     }
 }
-
-?>

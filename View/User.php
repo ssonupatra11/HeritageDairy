@@ -1,12 +1,24 @@
 <?php
+/**
+ * This class has a functionality to display choices for users.
+ */
 class User{
 
     /**
+     * @access private
+     * 
      * @var int/null
      */
     private ?int $choice=null;
 
-    public function showUserOption(){
+    /**
+     * This function display's choices for user to update name,age,gender,password,etc.
+     * 
+     * @access public
+     * 
+     * @return void
+     */
+    public function showUserOption():void{
         echo <<<EOT
             -------------------------
               USER UPDATE OPTIONS
@@ -35,12 +47,18 @@ class User{
                     break;
                 }
                 case 2:{
+                    /**
+                     * @var string
+                     */
                     $user_new_name=(string)readline("Enter user new name : ");
-                    $GLOBALS['user_functionality']->updateUserName($_SESSION["email"],$user_new_name);
+                    $GLOBALS['update_user_name']->updateUserName($_SESSION["email"],$user_new_name);
                     $GLOBALS['home']->home();
                     break;
                 }
                 case 3:{
+                    /**
+                     * @var string
+                     */
                     $user_new_email=(string)readline("Enter user new email : ");
 
                     //while loop with condition to re-enter email till it's incorrect
@@ -48,30 +66,46 @@ class User{
                         $user_new_email=(string)readline("Enter user new email again : ");
                     }
                     
-                    $GLOBALS['user_functionality']->updateUserEmail($_SESSION["email"],$user_new_email);
+                    $GLOBALS['update_user_email']->updateUserEmail($_SESSION["email"],$user_new_email);
                     $GLOBALS['home']->home();
                     break;
                 }
                 case 4:{
+                    /**
+                     * @var string
+                     */
                     $user_new_phone=(string)readline("Enter user new phone number : ");
-                    $GLOBALS['user_functionality']->updateUserPhone($_SESSION["email"],$user_new_phone);
+                    $GLOBALS['update_user_phone']->updateUserPhone($_SESSION["email"],$user_new_phone);
                     $GLOBALS['home']->home();
                     break;
                 }
                 case 5:{
+                    /**
+                     * @var string
+                     */
                     $user_new_age=(string)readline("Enter user new age : ");
-                    $GLOBALS['user_functionality']->updateUserAge($_SESSION["email"],$user_new_age);
+                    $GLOBALS['update_user_age']->updateUserAge($_SESSION["email"],$user_new_age);
                     $GLOBALS['home']->home();
                     break;
                 }
                 case 6:{
+                    /**
+                     * @var string
+                     */
                     $user_new_gender=(string)readline("Enter user gender : ");
-                    $GLOBALS['user_functionality']->updateUserGender($_SESSION["email"],$user_new_gender);
+                    $GLOBALS['update_user_gender']->updateUserGender($_SESSION["email"],$user_new_gender);
                     $GLOBALS['home']->home();
                     break;
                 }
                 case 7:{
+                    /**
+                     * @var mixed
+                     */
                     $check_pass_obj=new CheckPassword();
+
+                    /**
+                     * @var string
+                     */
                     $user_new_password=(string)readline("Enter user new password : ");
 
                     //while loop with condition to check & re-enter password till it's incorrect 
@@ -79,6 +113,9 @@ class User{
                         $user_new_password=(string)readline("Enter user new password again : ");
                     }
 
+                    /**
+                     * @var string
+                     */
                     $user_new_confirm_password=(string)readline("Enter user new password to confirm : ");
 
                     //while with condition to check password format & compare new and old password or re-enter password
@@ -86,12 +123,12 @@ class User{
                         $user_new_confirm_password=(string)readline("Enter user confirm password again : ");
                     }
 
-                    $GLOBALS['user_functionality']->updateUserPassword($_SESSION["email"],$user_new_password);
+                    $GLOBALS['update_user_password']->updateUserPassword($_SESSION["email"],$user_new_password);
                     $GLOBALS['home']->home();
                     break;
                 }
                 case 8:{
-                    $GLOBALS['user_functionality']->deleteUser($_SESSION["email"]);
+                    $GLOBALS['delete_user']->deleteUser($_SESSION["email"]);
                 }
                 case 9:{
                     $GLOBALS['exit']->exit();
@@ -103,4 +140,3 @@ class User{
             }
     }
 }
-?>
