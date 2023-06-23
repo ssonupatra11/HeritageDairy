@@ -1,1 +1,1 @@
-{"version":1,"defects":{"CheckEmailTest::testCheckEmailFormat":5,"CheckPasswordTest::testMatchPassword":7,"LoginFunctionalityTest::testCheckLogin":5},"times":{"CheckEmailTest::testCheckEmailFormat":0.351,"CheckPasswordTest::testPasswordFormat":0.015,"CheckPasswordTest::testMatchPassword":0.008,"LoginFunctionalityTest::testCheckLogin":0,"DatabaseConnectionTest::testGetConnection":0.016}}
+{"version":1,"defects":[],"times":{"DeleteProductTest::testDeleteProduct":0.009,"AddProductTest::addNewProduct":0.012}}
